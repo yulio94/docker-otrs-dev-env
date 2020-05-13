@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+    otrs:
+        build: 
+            context: ./otrs
+            dockerfile: Dockerfile
+        ports: 
+            - 8080:80
+        volumes: 
+            - ./src:/data/src
+            - ./src/my-config/httpd.conf:/etc/httpd/conf/httpd.conf
+        depends_on:
+            - bd
+
+    bd:
+        image: mariadb:latest
+        environment:
+            MYSQL_ROOT_PASSWORD: example    
+        ports: 
+            - 3306:3306
