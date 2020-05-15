@@ -1,0 +1,30 @@
+FROM centos:7
+
+LABEL maintainer="Julio Cesar Estrada <j.cesarestrada@hotmail.com>"
+
+RUN sudo yum -y install bash-completion "perl(Archive::Zip)" "perl(Crypt::SSLeay)" "perl(IO::Socket::SSL)" "perl(LWP::UserAgent)" "perl(Net::DNS)" "perl(Net::LDAP)" "perl(Template)" "perl(XML::LibXML)" "perl(XML::LibXSLT)" "perl(XML::Parser)" "perl(YAML::XS)" "perl(YAML::XS)" "perl(Authen::NTLM)" "perl(Mail::IMAPClient)" "perl(JSON::XS)" "perl(Encode::HanExtra)"  "perl(DBD::Pg)" "perl(Crypt::Eksblowfish::Bcrypt)" perl-core procmail
+
+RUN yum -y update && yum -y install wget && yum -y install epel-release
+
+RUN wget https://ftp.otrs.org/pub/otrs/RPMS/rhel/7/otrs-6.0.28-01.noarch.rpm
+
+RUN yum -y install --nogpgcheck  otrs-6.0.28-01.noarch.rpm
+
+RUN yum -y install "perl(Digest::MD5)" && \
+    yum -y install "perl(YAML::XS)" && \
+    yum -y install "perl(DBD::mysql)" && \
+    yum -y clean all && \
+    yum -y install "perl(Text::CSV_XS)"
+
+RUN /opt/otrs/bin/otrs.CheckModules.pl
+
+# RUN perl -MCPAN -e shell;
+
+RUN echo 'ServerName localhost' >> /etc/httpd/conf/httpd.conf
+
+# RUN su otrs && /opt/otrs/bin/otrs.Daemon.pl start && \
+#     /opt/otrs/bin/Cron.sh start
+
+EXPOSE 80
+
+CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
