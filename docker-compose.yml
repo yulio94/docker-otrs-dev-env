@@ -10,14 +10,12 @@ services:
         volumes: 
             - ./src:/data/src
         depends_on:
-            - mariadb
+            - postgres
 
-    mariadb:
-        build: 
-            context: ./mariadb
-            dockerfile: Dockerfile
+    postgres:
+        image: postgres:latest
         restart: always
         ports: 
-            - 3360:3360
+            - 5432:5432
         environment: 
-            MYSQL_ROOT_PASSWORD: root
+            POSTGRES_PASSWORD: root

@@ -13,7 +13,8 @@ RUN apt-get -y install libapache2-mod-perl2 libdbd-mysql-perl libtimedate-perl l
     libio-socket-ssl-perl libpdf-api2-perl libdbd-mysql-perl libsoap-lite-perl libtext-csv-xs-perl \
     libjson-xs-perl libapache-dbi-perl libxml-libxml-perl libxml-libxslt-perl libyaml-perl \
     libarchive-zip-perl libcrypt-eksblowfish-perl libencode-hanextra-perl libmail-imapclient-perl \
-    libtemplate-perl libdatetime-perl libauthen-ntlm-perl libdigest-md5-perl cpanminus gcc build-essential
+    libtemplate-perl libdatetime-perl libauthen-ntlm-perl libdigest-md5-perl cpanminus gcc build-essential \
+    libdbd-pg-perl
 
 RUN wget https://ftp.otrs.org/pub/otrs/otrs-6.0.28.tar.gz && \
     tar xzf otrs-6.0.28.tar.gz && \
@@ -45,10 +46,6 @@ RUN apt-get -y install apache2 libapache2-mod-perl2
 RUN ln -s /opt/otrs/scripts/apache2-httpd.include.conf /etc/apache2/sites-enabled/zzz_otrs.conf
 
 RUN a2enmod perl
-# systemctl restart apache2.service && \
-# a2enmod version && \
-# a2enmod deflate && \
-# a2enmod headers
 
 RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf
 
